@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>eclairjs</title>
+</head>
+<body>
+<canvas width="1500" height="1000" id="canvas"></canvas>
+</body>
+<script src="../dest/eclair.js"></script>
+<script>
+    var engine = new Eclair();
+    var point1 = new engine.Polygon({
+        positionX: 5,
+        positionY: 0,
+        vertices: [{x: 1, y: 1}, {x: -1, y: 1}, {x: -1, y: -1}, {x: 1, y: -1}],
+        startForceY: 1000,
+        startForceX: 1000
+    });
+    var point2 = new engine.Polygon({
+        positionX: 12,
+        positionY: 10,
+        vertices: [{x: 1, y: 1}, {x: -1, y: 1}, {x: -1, y: -1}, {x: 1, y: -1}],
+        static: true
+    });
+    engine.scene.addObject(point1);
+    engine.scene.addObject(point2);
+
+    var deb = new Eclair.Debugger('canvas', engine.scene);
+    deb.start(8);
+
+</script>
+</html>

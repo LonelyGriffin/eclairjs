@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>eclairjs</title>
+</head>
+<body>
+<canvas width="1500" height="1000" id="canvas"></canvas>
+</body>
+<script src="../dest/eclair.js"></script>
+<script>
+    var engine = new Eclair();
+    var point1 = new engine.Polygon({
+        positionX: 10,
+        positionY: 5,
+        vertices: [{x: 1, y: 1}, {x: -1, y: 1}, {x: -1, y: -1}, {x: 1, y: -1}],
+        forceY: 10
+    });
+    var point2 = new engine.Polygon({
+        positionX: 10,
+        positionY: 10,
+        vertices: [{x: 1, y: 1}, {x: -1, y: 1}, {x: -1, y: -1}, {x: 1, y: -1}],
+        forceY: 10
+    });
+    var point3 = new engine.Polygon({
+        positionX: 10,
+        positionY: 20,
+        vertices: [{x: 1, y: 1}, {x: -1, y: 1}, {x: -1, y: -1}, {x: 1, y: -1}],
+        forceY: 10,
+        static: true
+    });
+    var point4 = new engine.Polygon({
+        positionX: 10,
+        positionY: 0,
+        vertices: [{x: 1, y: 1}, {x: -1, y: 1}, {x: -1, y: -1}, {x: 1, y: -1}],
+        forceY: 10
+    });
+    //engine.scene.addObject(point1);
+    engine.scene.addObject(point2);
+    engine.scene.addObject(point3);
+    //engine.scene.addObject(point4);
+
+    var deb = new Eclair.Debugger('canvas', engine.scene);
+    deb.start(8);
+
+</script>
+</html>

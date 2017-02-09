@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>eclairjs</title>
+</head>
+<body>
+drag it
+<canvas width="1500" height="1000" id="canvas"></canvas>
+</body>
+<script src="../dest/eclair.js"></script>
+<script>
+    var engine = new Eclair();
+    var points = [];
+    var pointsTemp = [];
+    var scale = 0.65;
+    for(var i = 0; i < 25; i++) {
+        var p1 = new engine.Point({
+            positionX: i * scale + 1,
+            positionY: 1,
+            forceY: 10,
+            static: true
+        });
+        pointsTemp.push(p1);
+        points.push([p1]);
+        engine.scene.addObject(p1);
+        for(var j = 1; j < 30; j++) {
+            var p2 = new engine.Point({
+                positionX: i * scale  + 1,
+                positionY: j * scale  + 1,
+                forceY: 10
+            });
+            pointsTemp.push(p2);
+            engine.scene.addObject(p2);
+            points[i].push(p2);
+            engine.scene.addJoint(new engine.RodJoint({
+                object1: points[i][j],
+                object2: points[i][j - 1]
+            }));
+            if(i != 0) {
+                engine.scene.addJoint(new engine.RodJoint({
+                    object1: points[i][j],
+                    object2: points[i - 1][j]
+                }));
+            }
+        }
+    }
+    var deb = new Eclair.Debugger('canvas', engine.scene);
+    //console.log(scene);
+    //setTimeout(function(){deb.stop(scene);}, 20000);
+    points = pointsTemp;
+    var canvas = document.getElementById('canvas');
+    var point = null;
+    var oldStatic = null;
+    canvas.addEventListener('mousedown', function(event){
+        var x = event.offsetX / 20,
+            y = event.offsetY / 20;
+        point = points[0];
+
+        var minD = Math.sqrt(Math.pow(x - point.positionX, 2) + Math.pow(y - point.positionY, 2));
+        for(var i in points) {
+            var d = Math.sqrt(Math.pow(x - points[i].positionX, 2) + Math.pow(y - points[i].positionY, 2));
+            if(d < minD) {
+                minD = d;
+                point = points[i];
+            }
+        }
+        oldStatic = point.static;
+        point.static = true;
+        point.positionX = x;
+        point.positionY = y;
+    });
+    canvas.addEventListener('mouseup', function(event){
+        var p = point;
+        point = null;
+        p._prevState.positionX = p.positionX;
+        p._prevState.positionY = p.positionY;
+        p.static = oldStatic;
+    });
+    canvas.addEventListener('mousemove', function(event){
+        if(point) {
+            point.positionX = event.offsetX / 20;
+            point.positionY = event.offsetY / 20;
+        }
+    });
+
+
+    deb.start(60);
+
+
+</script>
+</html>

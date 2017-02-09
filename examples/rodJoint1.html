@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>eclairjs</title>
+</head>
+<body>
+<canvas width="1500" height="1000" id="canvas"></canvas>
+</body>
+<script src="../dest/eclair.js"></script>
+<script>
+    var engine = new Eclair();
+    var point1 = new engine.Point({
+        positionX: 20,
+        positionY: 5,
+        forceY: 10,
+        static: true
+    });
+    var point2 = new engine.Point({
+        positionX: 25,
+        positionY: 5,
+        forceY: 10
+    });
+    var point3 = new engine.Point({
+        positionX: 30,
+        positionY: 5,
+        forceY: 10
+    });
+    engine.scene.addObject(point1);
+    engine.scene.addObject(point2);
+    engine.scene.addObject(point3);
+    engine.scene.addJoint(new engine.RodJoint({
+        object1: point1,
+        object2: point2
+    }));
+    engine.scene.addJoint(new engine.RodJoint({
+        object1: point2,
+        object2: point3
+    }));
+
+    var deb = new Eclair.Debugger('canvas', engine.scene);
+    deb.start(8);
+
+</script>
+</html>
